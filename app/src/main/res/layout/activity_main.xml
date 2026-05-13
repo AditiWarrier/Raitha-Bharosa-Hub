@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- TOP DASHBOARD BAR -->
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:background="#2E7D32"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/cropButton"
+                android:text="🌾 Crop"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/marketButton"
+                android:text="📈 Market"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/schemeButton"
+                android:text="🏛 Schemes"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- PAGE CONTENT -->
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Crop Recommendation"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <!-- Soil Moisture -->
+
+            <TextView
+                android:text="Soil Moisture (%)"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/moistureInput"
+                android:hint="Enter soil moisture"
+                android:inputType="number"
+                android:minHeight="48dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Temperature -->
+
+            <TextView
+                android:text="Temperature (°C)"
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/tempInput"
+                android:hint="Enter temperature"
+                android:inputType="number"
+                android:minHeight="48dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Humidity -->
+
+            <TextView
+                android:text="Humidity (%)"
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/humidityInput"
+                android:hint="Enter humidity"
+                android:inputType="number"
+                android:minHeight="48dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Analyze Button -->
+
+            <Button
+                android:id="@+id/checkButton"
+                android:text="Analyze Conditions"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Result Card -->
+
+            <TextView
+                android:text="Recommendation"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/resultText"
+                android:text="Your crop recommendation will appear here."
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:background="#E8F5E9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Crop Image -->
+
+            <ImageView
+                android:id="@+id/cropImage"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

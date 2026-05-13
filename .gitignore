@@ -24,3 +24,4 @@ app/build
 # Generated APKs
 *.apk
 *.aab
+app/google-services.json

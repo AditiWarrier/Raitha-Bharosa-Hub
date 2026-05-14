@@ -17,7 +17,18 @@ class RBHViewModel : ViewModel() {
     var recommendation by mutableStateOf("")
         private set
 
+    var isKannada by mutableStateOf(false)
+
     init {
+        generateData()
+    }
+
+    fun setLanguage(
+        kannada: Boolean
+    ) {
+
+        isKannada = kannada
+
         generateData()
     }
 
@@ -37,13 +48,25 @@ class RBHViewModel : ViewModel() {
         recommendation = when {
 
             moisture > 30 ->
-                "❌ Soil too wet to sow"
+
+                if (isKannada)
+                    "❌ ಮಣ್ಣು ಬಿತ್ತನೆಗೆ ತುಂಬಾ ತೇವವಾಗಿದೆ"
+                else
+                    "❌ Soil too wet to sow"
 
             moisture in 20..30 ->
-                "✅ Ideal conditions for sowing"
+
+                if (isKannada)
+                    "✅ ಬಿತ್ತನೆಗೆ ಅತ್ಯುತ್ತಮ ಪರಿಸ್ಥಿತಿ"
+                else
+                    "✅ Ideal conditions for sowing"
 
             else ->
-                "⚠️ Soil moisture is low"
+
+                if (isKannada)
+                    "⚠️ ಮಣ್ಣಿನ ತೇವಾಂಶ ಕಡಿಮೆಯಾಗಿದೆ"
+                else
+                    "⚠️ Soil moisture is low"
         }
     }
 }

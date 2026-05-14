@@ -10,9 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +33,21 @@ class KrishiCalendarActivity : ComponentActivity() {
 @Composable
 fun KrishiCalendarScreen() {
 
+    val isKannada =
+        LanguageManager.isKannada.value
+
+    val title =
+        if (isKannada)
+            "🌾 ಕೃಷಿ ಕ್ಯಾಲೆಂಡರ್"
+        else
+            "🌾 Krishi Calendar"
+
+    val subtitle =
+        if (isKannada)
+            "7 ದಿನಗಳ ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಯೋಜನೆ"
+        else
+            "7-Day Smart Farming Plan"
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,12 +57,13 @@ fun KrishiCalendarScreen() {
     ) {
 
         Spacer(modifier = Modifier.height(16.dp))
+
         TopNavigationBar()
 
         Spacer(modifier = Modifier.height(30.dp))
 
         Text(
-            text = "🌾 Krishi Calendar",
+            text = title,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1B5E20)
@@ -56,54 +72,102 @@ fun KrishiCalendarScreen() {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "7-Day Smart Farming Plan",
+            text = subtitle,
             fontSize = 18.sp,
             color = Color.DarkGray
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        CalendarCard(
-            day = "Monday",
-            weather = "☀ Sunny",
-            action = "✅ Good day for sowing Paddy"
-        )
+        if (isKannada) {
 
-        CalendarCard(
-            day = "Tuesday",
-            weather = "🌧 Heavy Rain",
-            action = "⚠ Avoid fertilizer application"
-        )
+            CalendarCard(
+                day = "ಸೋಮವಾರ",
+                weather = "☀ ಬಿಸಿಲು",
+                action = "✅ ನೆಲ ಬಿತ್ತನೆಗೆ ಉತ್ತಮ ದಿನ"
+            )
 
-        CalendarCard(
-            day = "Wednesday",
-            weather = "⛅ Cloudy",
-            action = "✅ Soil conditions are stable"
-        )
+            CalendarCard(
+                day = "ಮಂಗಳವಾರ",
+                weather = "🌧 ಭಾರಿ ಮಳೆ",
+                action = "⚠ ರಸಗೊಬ್ಬರ ಬಳಕೆ ತಪ್ಪಿಸಿ"
+            )
 
-        CalendarCard(
-            day = "Thursday",
-            weather = "🌦 Light Rain",
-            action = "⚠ Delay pesticide spraying"
-        )
+            CalendarCard(
+                day = "ಬುಧವಾರ",
+                weather = "⛅ ಮೋಡ"
+                ,
+                action = "✅ ಮಣ್ಣಿನ ಪರಿಸ್ಥಿತಿ ಸ್ಥಿರವಾಗಿದೆ"
+            )
 
-        CalendarCard(
-            day = "Friday",
-            weather = "☀ Sunny",
-            action = "✅ Best day for irrigation"
-        )
+            CalendarCard(
+                day = "ಗುರುವಾರ",
+                weather = "🌦 ತುಂತುರು ಮಳೆ",
+                action = "⚠ ಕೀಟನಾಶಕ ಸಿಂಪಡಣೆ ವಿಳಂಬಿಸಿ"
+            )
 
-        CalendarCard(
-            day = "Saturday",
-            weather = "🌧 Storm Warning",
-            action = "❌ Avoid sowing activities"
-        )
+            CalendarCard(
+                day = "ಶುಕ್ರವಾರ",
+                weather = "☀ ಬಿಸಿಲು",
+                action = "✅ ನೀರಾವರಿಗೆ ಉತ್ತಮ ದಿನ"
+            )
 
-        CalendarCard(
-            day = "Sunday",
-            weather = "⛅ Mild Weather",
-            action = "✅ Good conditions for fertilization"
-        )
+            CalendarCard(
+                day = "ಶನಿವಾರ",
+                weather = "🌧 ಗಾಳಿ ಮಳೆ ಎಚ್ಚರಿಕೆ",
+                action = "❌ ಬಿತ್ತನೆ ಚಟುವಟಿಕೆ ತಪ್ಪಿಸಿ"
+            )
+
+            CalendarCard(
+                day = "ಭಾನುವಾರ",
+                weather = "⛅ ಸಮಶೀತೋಷ್ಣ ಹವಾಮಾನ",
+                action = "✅ ಗೊಬ್ಬರ ಬಳಕೆಗಾಗಿ ಉತ್ತಮ ಪರಿಸ್ಥಿತಿ"
+            )
+
+        } else {
+
+            CalendarCard(
+                day = "Monday",
+                weather = "☀ Sunny",
+                action = "✅ Good day for sowing Paddy"
+            )
+
+            CalendarCard(
+                day = "Tuesday",
+                weather = "🌧 Heavy Rain",
+                action = "⚠ Avoid fertilizer application"
+            )
+
+            CalendarCard(
+                day = "Wednesday",
+                weather = "⛅ Cloudy",
+                action = "✅ Soil conditions are stable"
+            )
+
+            CalendarCard(
+                day = "Thursday",
+                weather = "🌦 Light Rain",
+                action = "⚠ Delay pesticide spraying"
+            )
+
+            CalendarCard(
+                day = "Friday",
+                weather = "☀ Sunny",
+                action = "✅ Best day for irrigation"
+            )
+
+            CalendarCard(
+                day = "Saturday",
+                weather = "🌧 Storm Warning",
+                action = "❌ Avoid sowing activities"
+            )
+
+            CalendarCard(
+                day = "Sunday",
+                weather = "⛅ Mild Weather",
+                action = "✅ Good conditions for fertilization"
+            )
+        }
 
         Spacer(modifier = Modifier.height(30.dp))
     }

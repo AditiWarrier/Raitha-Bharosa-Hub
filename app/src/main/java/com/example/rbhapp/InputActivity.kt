@@ -58,6 +58,9 @@ fun InputScreen() {
         mutableStateOf("")
     }
 
+    val isKannada =
+        LanguageManager.isKannada.value
+
     val context = LocalContext.current
 
     val database =
@@ -65,6 +68,60 @@ fun InputScreen() {
 
     val historyDao =
         database.historyDao()
+
+    val title =
+        if (isKannada)
+            "🌾 ಇನ್‌ಪುಟ್ ಕೇಂದ್ರ"
+        else
+            "🌾 Input Center"
+
+    val subtitle =
+        if (isKannada)
+            "ಮಣ್ಣು ಮತ್ತು ಪೋಷಕಾಂಶ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ"
+        else
+            "Enter soil and nutrient details"
+
+    val moistureLabel =
+        if (isKannada)
+            "ಮಣ್ಣಿನ ತೇವಾಂಶ (%)"
+        else
+            "Soil Moisture (%)"
+
+    val nitrogenLabel =
+        if (isKannada)
+            "ನೈಟ್ರೋಜನ್ (N)"
+        else
+            "Nitrogen (N)"
+
+    val phosphorusLabel =
+        if (isKannada)
+            "ಫಾಸ್ಫರಸ್ (P)"
+        else
+            "Phosphorus (P)"
+
+    val potassiumLabel =
+        if (isKannada)
+            "ಪೊಟ್ಯಾಸಿಯಂ (K)"
+        else
+            "Potassium (K)"
+
+    val analyzeButton =
+        if (isKannada)
+            "ಮಣ್ಣನ್ನು ವಿಶ್ಲೇಷಿಸಿ"
+        else
+            "Analyze Soil"
+
+    val resultTitle =
+        if (isKannada)
+            "📊 ವಿಶ್ಲೇಷಣೆಯ ಫಲಿತಾಂಶ"
+        else
+            "📊 Analysis Result"
+
+    val sowingText =
+        if (isKannada)
+            "ಬಿತ್ತನೆ ಸೂಚ್ಯಂಕ"
+        else
+            "Sowing Index"
 
     Column(
         modifier = Modifier
@@ -81,7 +138,7 @@ fun InputScreen() {
         Spacer(modifier = Modifier.height(30.dp))
 
         Text(
-            text = "🌾 Input Center",
+            text = title,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1B5E20)
@@ -90,7 +147,7 @@ fun InputScreen() {
         Spacer(modifier = Modifier.height(6.dp))
 
         Text(
-            text = "Enter soil and nutrient details",
+            text = subtitle,
             fontSize = 18.sp,
             color = Color.DarkGray
         )
@@ -119,7 +176,7 @@ fun InputScreen() {
                     },
 
                     label = {
-                        Text("Soil Moisture (%)")
+                        Text(moistureLabel)
                     },
 
                     modifier = Modifier.fillMaxWidth(),
@@ -137,7 +194,7 @@ fun InputScreen() {
                     },
 
                     label = {
-                        Text("Nitrogen (N)")
+                        Text(nitrogenLabel)
                     },
 
                     modifier = Modifier.fillMaxWidth(),
@@ -155,7 +212,7 @@ fun InputScreen() {
                     },
 
                     label = {
-                        Text("Phosphorus (P)")
+                        Text(phosphorusLabel)
                     },
 
                     modifier = Modifier.fillMaxWidth(),
@@ -173,7 +230,7 @@ fun InputScreen() {
                     },
 
                     label = {
-                        Text("Potassium (K)")
+                        Text(potassiumLabel)
                     },
 
                     modifier = Modifier.fillMaxWidth(),
@@ -189,7 +246,10 @@ fun InputScreen() {
                         if (moisture.toIntOrNull() == null) {
 
                             result =
-                                "Please enter valid soil moisture"
+                                if (isKannada)
+                                    "ಸರಿಯಾದ ತೇವಾಂಶ ನಮೂದಿಸಿ"
+                                else
+                                    "Please enter valid soil moisture"
 
                             sowingIndex = "--"
 
@@ -198,32 +258,17 @@ fun InputScreen() {
                             val moistureValue =
                                 moisture.toInt()
 
-                            when {
+                            val analysisResult =
+                                DataGenerator.analyzeSoil(
+                                    moistureValue,
+                                    isKannada
+                                )
 
-                                moistureValue > 30 -> {
+                            sowingIndex =
+                                analysisResult.sowingIndex
 
-                                    sowingIndex = "35%"
-
-                                    result =
-                                        "❌ Soil is too wet for sowing.\n\nRecommendation:\nDelay sowing for 1-2 days and avoid fertilizer application."
-                                }
-
-                                moistureValue in 20..30 -> {
-
-                                    sowingIndex = "85%"
-
-                                    result =
-                                        "✅ Excellent conditions for sowing.\n\nRecommendation:\nProceed with sowing within the next 48 hours."
-                                }
-
-                                else -> {
-
-                                    sowingIndex = "55%"
-
-                                    result =
-                                        "⚠ Soil moisture is low.\n\nRecommendation:\nIrrigate field before sowing crops."
-                                }
-                            }
+                            result =
+                                analysisResult.recommendation
 
                             CoroutineScope(Dispatchers.IO).launch {
 
@@ -263,7 +308,7 @@ fun InputScreen() {
                 ) {
 
                     Text(
-                        text = "Analyze Soil",
+                        text = analyzeButton,
                         fontSize = 18.sp
                     )
                 }
@@ -291,7 +336,7 @@ fun InputScreen() {
             ) {
 
                 Text(
-                    text = "📊 Analysis Result",
+                    text = resultTitle,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF1B5E20)
@@ -300,7 +345,7 @@ fun InputScreen() {
                 Spacer(modifier = Modifier.height(18.dp))
 
                 Text(
-                    text = "Sowing Index: $sowingIndex",
+                    text = "$sowingText: $sowingIndex",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold
                 )

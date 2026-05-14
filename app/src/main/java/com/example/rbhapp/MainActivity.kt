@@ -10,6 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +40,57 @@ fun DashboardScreen(
     val sowingIndex = viewModel.sowingIndex
     val recommendation = viewModel.recommendation
 
+    val isKannada =
+        LanguageManager.isKannada.value
+
+    val appTitle =
+        if (isKannada)
+            "ರೈತ ಭರೋಸಾ ಹಬ್"
+        else
+            "🌾 Raitha Bharosa Hub"
+
+    val subtitle =
+        if (isKannada)
+            "ಸ್ಮಾರ್ಟ್ ಬಿತ್ತನೆ ಸಹಾಯಕ"
+        else
+            "Smart Sowing Assistant"
+
+    val welcomeText =
+        if (isKannada)
+            "ಸ್ವಾಗತ ರೈತ 👋"
+        else
+            "Welcome Farmer 👋"
+
+    val sowingText =
+        if (isKannada)
+            "ಬಿತ್ತನೆ ಸೂಚ್ಯಂಕ"
+        else
+            "Sowing Index"
+
+    val moistureText =
+        if (isKannada)
+            "🌧 ಮಣ್ಣಿನ ತೇವಾಂಶ"
+        else
+            "🌧 Soil Moisture"
+
+    val recommendationText =
+        if (isKannada)
+            "📢 ಶಿಫಾರಸು"
+        else
+            "📢 Recommendation"
+
+    val buttonText =
+        if (isKannada)
+            "ವಿಶ್ಲೇಷಿಸಿ"
+        else
+            "Analyze Conditions"
+
+    val languageButtonText =
+        if (isKannada)
+            "English"
+        else
+            "ಕನ್ನಡ"
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -48,16 +101,37 @@ fun DashboardScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Reusable Top Navigation
-
         TopNavigationBar()
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            onClick = {
+
+                LanguageManager.isKannada.value =
+                    !LanguageManager.isKannada.value
+
+                viewModel.setLanguage(
+                    LanguageManager.isKannada.value
+                )
+            },
+
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF33691E)
+            ),
+
+            shape = RoundedCornerShape(16.dp)
+        ) {
+
+            Text(
+                text = languageButtonText
+            )
+        }
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        // Header Text
-
         Text(
-            text = "🌾 Raitha Bharosa Hub",
+            text = appTitle,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1B5E20)
@@ -66,7 +140,7 @@ fun DashboardScreen(
         Spacer(modifier = Modifier.height(6.dp))
 
         Text(
-            text = "Smart Sowing Assistant",
+            text = subtitle,
             fontSize = 18.sp,
             color = Color.DarkGray
         )
@@ -74,14 +148,12 @@ fun DashboardScreen(
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = "Welcome Farmer 👋",
+            text = welcomeText,
             fontSize = 16.sp,
             color = Color.Gray
         )
 
         Spacer(modifier = Modifier.height(30.dp))
-
-        // Sowing Index Card
 
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -103,7 +175,7 @@ fun DashboardScreen(
             ) {
 
                 Text(
-                    text = "Sowing Index",
+                    text = sowingText,
                     fontSize = 20.sp,
                     color = Color.White
                 )
@@ -121,8 +193,6 @@ fun DashboardScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Moisture Card
-
         Card(
             modifier = Modifier.fillMaxWidth(),
 
@@ -138,7 +208,7 @@ fun DashboardScreen(
             ) {
 
                 Text(
-                    text = "🌧 Soil Moisture",
+                    text = moistureText,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -155,8 +225,6 @@ fun DashboardScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Recommendation Card
-
         Card(
             modifier = Modifier.fillMaxWidth(),
 
@@ -172,7 +240,7 @@ fun DashboardScreen(
             ) {
 
                 Text(
-                    text = "📢 Recommendation",
+                    text = recommendationText,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -188,8 +256,6 @@ fun DashboardScreen(
         }
 
         Spacer(modifier = Modifier.height(30.dp))
-
-        // Analyze Button
 
         Button(
             onClick = {
@@ -208,7 +274,7 @@ fun DashboardScreen(
         ) {
 
             Text(
-                text = "Analyze Conditions",
+                text = buttonText,
                 fontSize = 20.sp
             )
         }

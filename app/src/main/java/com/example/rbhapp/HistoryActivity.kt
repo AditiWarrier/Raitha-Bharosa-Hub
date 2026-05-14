@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,6 +36,21 @@ class HistoryActivity : ComponentActivity() {
 
 @Composable
 fun HistoryScreen() {
+
+    val isKannada =
+        LanguageManager.isKannada.value
+
+    val title =
+        if (isKannada)
+            "📜 ಕೃಷಿ ಇತಿಹಾಸ"
+        else
+            "📜 Farming History"
+
+    val subtitle =
+        if (isKannada)
+            "ಉಳಿಸಿದ ಮಣ್ಣಿನ ವಿಶ್ಲೇಷಣೆ ದಾಖಲೆಗಳು"
+        else
+            "Saved soil analysis records"
 
     val context = LocalContext.current
 
@@ -75,7 +89,7 @@ fun HistoryScreen() {
         Spacer(modifier = Modifier.height(30.dp))
 
         Text(
-            text = "📜 Farming History",
+            text = title,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1B5E20)
@@ -84,7 +98,7 @@ fun HistoryScreen() {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Saved soil analysis records",
+            text = subtitle,
             fontSize = 18.sp,
             color = Color.DarkGray
         )
@@ -95,7 +109,10 @@ fun HistoryScreen() {
 
             items(historyList) { history ->
 
-                HistoryCard(history)
+                HistoryCard(
+                    history,
+                    isKannada
+                )
             }
         }
     }
@@ -103,13 +120,26 @@ fun HistoryScreen() {
 
 @Composable
 fun HistoryCard(
-    history: HistoryEntity
+    history: HistoryEntity,
+    isKannada: Boolean
 ) {
 
     val formattedDate = SimpleDateFormat(
         "dd MMM yyyy, hh:mm a",
         Locale.getDefault()
     ).format(Date(history.timestamp))
+
+    val moistureText =
+        if (isKannada)
+            "ತೇವಾಂಶ"
+        else
+            "Moisture"
+
+    val sowingText =
+        if (isKannada)
+            "ಬಿತ್ತನೆ ಸೂಚ್ಯಂಕ"
+        else
+            "Sowing Index"
 
     Card(
         modifier = Modifier
@@ -137,7 +167,7 @@ fun HistoryCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Moisture: ${history.moisture}%",
+                text = "$moistureText: ${history.moisture}%",
                 fontSize = 17.sp
             )
 
@@ -151,7 +181,7 @@ fun HistoryCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Sowing Index: ${history.sowingIndex}",
+                text = "$sowingText: ${history.sowingIndex}",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )

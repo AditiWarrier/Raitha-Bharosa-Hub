@@ -14,9 +14,31 @@
 
     android:background="#F1F8E9">
 
+    <!-- Language Toggle -->
+
+    <Button
+        android:id="@+id/languageButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="ಕನ್ನಡ"
+
+        android:textStyle="bold"
+
+        android:textColor="#FFFFFF"
+
+        android:backgroundTint="#33691E"
+
+        android:layout_gravity="end"
+
+        android:layout_marginBottom="24dp"/>
+
     <!-- App Title -->
 
     <TextView
+        android:id="@+id/titleText"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -33,6 +55,8 @@
     <!-- Subtitle -->
 
     <TextView
+        android:id="@+id/subtitleText"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 

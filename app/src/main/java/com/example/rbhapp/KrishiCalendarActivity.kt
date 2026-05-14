@@ -36,6 +36,9 @@ fun KrishiCalendarScreen() {
     val isKannada =
         LanguageManager.isKannada.value
 
+    val weatherList =
+        MockWeatherRepository.getWeatherData()
+
     val title =
         if (isKannada)
             "🌾 ಕೃಷಿ ಕ್ಯಾಲೆಂಡರ್"
@@ -79,93 +82,27 @@ fun KrishiCalendarScreen() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        if (isKannada) {
+        weatherList.forEach { weather ->
 
             CalendarCard(
-                day = "ಸೋಮವಾರ",
-                weather = "☀ ಬಿಸಿಲು",
-                action = "✅ ನೆಲ ಬಿತ್ತನೆಗೆ ಉತ್ತಮ ದಿನ"
-            )
 
-            CalendarCard(
-                day = "ಮಂಗಳವಾರ",
-                weather = "🌧 ಭಾರಿ ಮಳೆ",
-                action = "⚠ ರಸಗೊಬ್ಬರ ಬಳಕೆ ತಪ್ಪಿಸಿ"
-            )
+                day =
+                    if (isKannada)
+                        weather.dayKannada
+                    else
+                        weather.dayEnglish,
 
-            CalendarCard(
-                day = "ಬುಧವಾರ",
-                weather = "⛅ ಮೋಡ"
-                ,
-                action = "✅ ಮಣ್ಣಿನ ಪರಿಸ್ಥಿತಿ ಸ್ಥಿರವಾಗಿದೆ"
-            )
+                weather =
+                    if (isKannada)
+                        weather.weatherKannada
+                    else
+                        weather.weatherEnglish,
 
-            CalendarCard(
-                day = "ಗುರುವಾರ",
-                weather = "🌦 ತುಂತುರು ಮಳೆ",
-                action = "⚠ ಕೀಟನಾಶಕ ಸಿಂಪಡಣೆ ವಿಳಂಬಿಸಿ"
-            )
-
-            CalendarCard(
-                day = "ಶುಕ್ರವಾರ",
-                weather = "☀ ಬಿಸಿಲು",
-                action = "✅ ನೀರಾವರಿಗೆ ಉತ್ತಮ ದಿನ"
-            )
-
-            CalendarCard(
-                day = "ಶನಿವಾರ",
-                weather = "🌧 ಗಾಳಿ ಮಳೆ ಎಚ್ಚರಿಕೆ",
-                action = "❌ ಬಿತ್ತನೆ ಚಟುವಟಿಕೆ ತಪ್ಪಿಸಿ"
-            )
-
-            CalendarCard(
-                day = "ಭಾನುವಾರ",
-                weather = "⛅ ಸಮಶೀತೋಷ್ಣ ಹವಾಮಾನ",
-                action = "✅ ಗೊಬ್ಬರ ಬಳಕೆಗಾಗಿ ಉತ್ತಮ ಪರಿಸ್ಥಿತಿ"
-            )
-
-        } else {
-
-            CalendarCard(
-                day = "Monday",
-                weather = "☀ Sunny",
-                action = "✅ Good day for sowing Paddy"
-            )
-
-            CalendarCard(
-                day = "Tuesday",
-                weather = "🌧 Heavy Rain",
-                action = "⚠ Avoid fertilizer application"
-            )
-
-            CalendarCard(
-                day = "Wednesday",
-                weather = "⛅ Cloudy",
-                action = "✅ Soil conditions are stable"
-            )
-
-            CalendarCard(
-                day = "Thursday",
-                weather = "🌦 Light Rain",
-                action = "⚠ Delay pesticide spraying"
-            )
-
-            CalendarCard(
-                day = "Friday",
-                weather = "☀ Sunny",
-                action = "✅ Best day for irrigation"
-            )
-
-            CalendarCard(
-                day = "Saturday",
-                weather = "🌧 Storm Warning",
-                action = "❌ Avoid sowing activities"
-            )
-
-            CalendarCard(
-                day = "Sunday",
-                weather = "⛅ Mild Weather",
-                action = "✅ Good conditions for fertilization"
+                action =
+                    if (isKannada)
+                        weather.actionKannada
+                    else
+                        weather.actionEnglish
             )
         }
 
@@ -214,8 +151,8 @@ fun CalendarCard(
 
             Text(
                 text = action,
-                fontSize = 18.sp,
-                lineHeight = 26.sp
+                fontSize = 16.sp,
+                lineHeight = 24.sp
             )
         }
     }

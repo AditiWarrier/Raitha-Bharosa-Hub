@@ -259,6 +259,11 @@ fun DashboardScreen(
 
         Button(
             onClick = {
+
+                viewModel.setLanguage(
+                    LanguageManager.isKannada.value
+                )
+
                 viewModel.generateData()
             },
 

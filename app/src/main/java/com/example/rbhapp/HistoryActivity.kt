@@ -5,18 +5,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HistoryActivity : ComponentActivity() {
 
@@ -32,17 +38,37 @@ class HistoryActivity : ComponentActivity() {
 @Composable
 fun HistoryScreen() {
 
+    val context = LocalContext.current
+
+    val database =
+        AppDatabase.getDatabase(context)
+
+    val historyDao =
+        database.historyDao()
+
+    var historyList by remember {
+        mutableStateOf<List<HistoryEntity>>(
+            emptyList()
+        )
+    }
+
+    LaunchedEffect(Unit) {
+
+        withContext(Dispatchers.IO) {
+
+            historyList =
+                historyDao.getAllHistory()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .background(Color(0xFFF1F8E9))
             .padding(20.dp)
     ) {
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Reusable Navigation
 
         TopNavigationBar()
 
@@ -58,45 +84,32 @@ fun HistoryScreen() {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Previous farming activity records",
+            text = "Saved soil analysis records",
             fontSize = 18.sp,
             color = Color.DarkGray
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        HistoryCard(
-            season = "Kharif 2025",
-            crop = "Paddy",
-            result = "✅ Good Yield",
-            note = "Timely sowing improved crop growth."
-        )
+        LazyColumn {
 
-        HistoryCard(
-            season = "Rabi 2024",
-            crop = "Ragi",
-            result = "⚠ Moderate Yield",
-            note = "Low rainfall affected productivity."
-        )
+            items(historyList) { history ->
 
-        HistoryCard(
-            season = "Kharif 2024",
-            crop = "Sugarcane",
-            result = "✅ Healthy Crop",
-            note = "Fertilizer timing was effective."
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
+                HistoryCard(history)
+            }
+        }
     }
 }
 
 @Composable
 fun HistoryCard(
-    season: String,
-    crop: String,
-    result: String,
-    note: String
+    history: HistoryEntity
 ) {
+
+    val formattedDate = SimpleDateFormat(
+        "dd MMM yyyy, hh:mm a",
+        Locale.getDefault()
+    ).format(Date(history.timestamp))
 
     Card(
         modifier = Modifier
@@ -115,23 +128,30 @@ fun HistoryCard(
         ) {
 
             Text(
-                text = season,
-                fontSize = 24.sp,
+                text = formattedDate,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF1B5E20)
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Crop: $crop",
-                fontSize = 18.sp
+                text = "Moisture: ${history.moisture}%",
+                fontSize = 17.sp
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = result,
+                text = "NPK: ${history.nitrogen} / ${history.phosphorus} / ${history.potassium}",
+                fontSize = 17.sp
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Sowing Index: ${history.sowingIndex}",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -139,7 +159,7 @@ fun HistoryCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = note,
+                text = history.recommendation,
                 fontSize = 17.sp,
                 lineHeight = 25.sp
             )

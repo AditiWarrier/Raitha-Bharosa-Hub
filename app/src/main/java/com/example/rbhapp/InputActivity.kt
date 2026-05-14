@@ -12,9 +12,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class InputActivity : ComponentActivity() {
 
@@ -54,6 +58,14 @@ fun InputScreen() {
         mutableStateOf("")
     }
 
+    val context = LocalContext.current
+
+    val database =
+        AppDatabase.getDatabase(context)
+
+    val historyDao =
+        database.historyDao()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,6 +75,7 @@ fun InputScreen() {
     ) {
 
         Spacer(modifier = Modifier.height(16.dp))
+
         TopNavigationBar()
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -83,8 +96,6 @@ fun InputScreen() {
         )
 
         Spacer(modifier = Modifier.height(30.dp))
-
-        // Input Card
 
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -213,6 +224,30 @@ fun InputScreen() {
                                         "⚠ Soil moisture is low.\n\nRecommendation:\nIrrigate field before sowing crops."
                                 }
                             }
+
+                            CoroutineScope(Dispatchers.IO).launch {
+
+                                historyDao.insertHistory(
+
+                                    HistoryEntity(
+
+                                        moisture = moisture,
+
+                                        nitrogen = nitrogen,
+
+                                        phosphorus = phosphorus,
+
+                                        potassium = potassium,
+
+                                        sowingIndex = sowingIndex,
+
+                                        recommendation = result,
+
+                                        timestamp =
+                                            System.currentTimeMillis()
+                                    )
+                                )
+                            }
                         }
                     },
 
@@ -236,8 +271,6 @@ fun InputScreen() {
         }
 
         Spacer(modifier = Modifier.height(30.dp))
-
-        // Result Card
 
         Card(
             modifier = Modifier.fillMaxWidth(),

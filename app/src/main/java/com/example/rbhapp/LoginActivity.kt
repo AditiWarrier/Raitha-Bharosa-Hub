@@ -150,7 +150,7 @@ class LoginActivity : AppCompatActivity() {
                         val intent =
                             Intent(
                                 this,
-                                MainActivity::class.java
+                                OnboardingActivity::class.java
                             )
 
                         startActivity(intent)

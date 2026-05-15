@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RBHApp">
+
         <activity
             android:name=".HistoryActivity"
             android:exported="false" />
@@ -24,7 +25,6 @@
             android:name=".KrishiCalendarActivity"
             android:exported="false" />
 
-
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
@@ -34,13 +34,19 @@
             android:exported="false" />
 
         <activity
+            android:name=".OnboardingActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
 
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
 
         </activity>

@@ -286,7 +286,8 @@ fun InputScreen() {
 
                                         sowingIndex = sowingIndex,
 
-                                        recommendation = result,
+                                        recommendationType =
+                                            analysisResult.recommendationType,
 
                                         timestamp =
                                             System.currentTimeMillis()

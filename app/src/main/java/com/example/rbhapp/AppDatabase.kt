@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [HistoryEntity::class],
-    version = 1
+    version = 2
 )
 
 abstract class AppDatabase : RoomDatabase() {
@@ -34,7 +34,11 @@ abstract class AppDatabase : RoomDatabase() {
                         AppDatabase::class.java,
 
                         "rbh_database"
-                    ).build()
+                    )
+
+                        .fallbackToDestructiveMigration()
+
+                        .build()
 
                 INSTANCE = instance
 

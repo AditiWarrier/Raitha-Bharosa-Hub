@@ -4,6 +4,8 @@ data class SoilAnalysisResult(
 
     val sowingIndex: String,
 
+    val recommendationType: String,
+
     val recommendation: String
 )
 
@@ -27,6 +29,8 @@ object DataGenerator {
 
                     sowingIndex = "35%",
 
+                    recommendationType = "WET",
+
                     recommendation =
 
                         if (isKannada)
@@ -45,6 +49,8 @@ object DataGenerator {
 
                     sowingIndex = "85%",
 
+                    recommendationType = "IDEAL",
+
                     recommendation =
 
                         if (isKannada)
@@ -62,6 +68,8 @@ object DataGenerator {
                 SoilAnalysisResult(
 
                     sowingIndex = "55%",
+
+                    recommendationType = "DRY",
 
                     recommendation =
 

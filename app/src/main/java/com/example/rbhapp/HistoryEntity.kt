@@ -19,7 +19,7 @@ data class HistoryEntity(
 
     val sowingIndex: String,
 
-    val recommendation: String,
+    val recommendationType: String,
 
     val timestamp: Long
 )
